@@ -1,0 +1,2781 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "EPEX Spot",
+  "description": {
+    "en": "Day-ahead electricity prices (EPEX Spot) and dynamic tariffs in Gladys.",
+    "fr": "Prix de l’électricité day-ahead (EPEX Spot) et tarifs dynamiques dans Gladys.",
+    "de": "Day-Ahead-Strompreise (EPEX Spot) und dynamische Tarife in Gladys.",
+    "es": "Precios eléctricos day-ahead (EPEX Spot) y tarifas dinámicas en Gladys."
+  },
+  "version": "0.0.0",
+  "docker_image": "ghcr.io/gboulvin/gladys-epex-spot:0.0.0",
+  "gladys_version": ">=5.2.0",
+  "cover_image": "https://raw.githubusercontent.com/gboulvin/Gladys-EPEX-Spot/main/cover.png",
+  "categories": ["energy", "services"],
+  "transports": ["cloud"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Day-ahead electricity prices",
+        "fr": "Prix day-ahead de l’électricité",
+        "de": "Day-Ahead-Strompreise",
+        "es": "Precios day-ahead de la electricidad"
+      },
+      "description": {
+        "en": "The integration downloads the day-ahead prices of your bidding zone (EPEX Spot auction, coupled European market) from the free energy-charts.info API: no account, no API key. Tomorrow’s prices are published around 13:00 CET. It feeds the spot calendar of Gladys, so you can create a dynamic electricity contract from the templates offered in the energy contract wizard.",
+        "fr": "L’intégration télécharge les prix day-ahead de votre zone de prix (enchère EPEX Spot, marché européen couplé) via l’API gratuite energy-charts.info : pas de compte, pas de clé d’API. Les prix du lendemain sont publiés vers 13 h. Elle alimente le calendrier spot de Gladys : vous pouvez créer un contrat d’électricité dynamique à partir des modèles proposés dans l’assistant de contrat d’énergie.",
+        "de": "Die Integration lädt die Day-Ahead-Preise Ihrer Gebotszone (EPEX-Spot-Auktion, gekoppelter europäischer Markt) über die kostenlose API von energy-charts.info: kein Konto, kein API-Schlüssel. Die Preise für morgen erscheinen gegen 13 Uhr MEZ. Sie speist den Spot-Kalender von Gladys, sodass Sie im Assistenten für Energieverträge einen dynamischen Stromvertrag aus den angebotenen Vorlagen anlegen können.",
+        "es": "La integración descarga los precios day-ahead de su zona de oferta (subasta EPEX Spot, mercado europeo acoplado) desde la API gratuita energy-charts.info: sin cuenta ni clave de API. Los precios de mañana se publican hacia las 13:00 CET. Alimenta el calendario spot de Gladys, para crear un contrato eléctrico dinámico a partir de las plantillas del asistente de contratos de energía."
+      },
+      "links": [
+        {
+          "url": "https://www.energy-charts.info/charts/price_spot_market/chart.htm",
+          "label": {
+            "en": "Energy-Charts prices",
+            "fr": "Prix sur Energy-Charts",
+            "de": "Preise auf Energy-Charts",
+            "es": "Precios en Energy-Charts"
+          }
+        },
+        {
+          "url": "https://www.epexspot.com/en/market-results",
+          "label": {
+            "en": "EPEX Spot market results",
+            "fr": "Résultats du marché EPEX Spot",
+            "de": "EPEX-Spot-Marktergebnisse",
+            "es": "Resultados del mercado EPEX Spot"
+          }
+        }
+      ]
+    },
+    {
+      "key": "bidding_zone",
+      "type": "select",
+      "label": {
+        "en": "Bidding zone",
+        "fr": "Zone de prix",
+        "de": "Gebotszone",
+        "es": "Zona de oferta"
+      },
+      "description": {
+        "en": "The market area of your electricity meter.",
+        "fr": "La zone de marché de votre compteur électrique.",
+        "de": "Das Marktgebiet Ihres Stromzählers.",
+        "es": "El área de mercado de su contador eléctrico."
+      },
+      "required": true,
+      "default": "FR",
+      "options": [
+        {
+          "value": "FR",
+          "label": {
+            "en": "France",
+            "fr": "France",
+            "de": "Frankreich",
+            "es": "Francia"
+          }
+        },
+        {
+          "value": "DE-LU",
+          "label": {
+            "en": "Germany / Luxembourg",
+            "fr": "Allemagne / Luxembourg",
+            "de": "Deutschland / Luxemburg",
+            "es": "Alemania / Luxemburgo"
+          }
+        },
+        {
+          "value": "BE",
+          "label": {
+            "en": "Belgium",
+            "fr": "Belgique",
+            "de": "Belgien",
+            "es": "Bélgica"
+          }
+        },
+        {
+          "value": "NL",
+          "label": {
+            "en": "Netherlands",
+            "fr": "Pays-Bas",
+            "de": "Niederlande",
+            "es": "Países Bajos"
+          }
+        },
+        {
+          "value": "AT",
+          "label": {
+            "en": "Austria",
+            "fr": "Autriche",
+            "de": "Österreich",
+            "es": "Austria"
+          }
+        },
+        {
+          "value": "CH",
+          "label": {
+            "en": "Switzerland",
+            "fr": "Suisse",
+            "de": "Schweiz",
+            "es": "Suiza"
+          }
+        },
+        {
+          "value": "ES",
+          "label": {
+            "en": "Spain",
+            "fr": "Espagne",
+            "de": "Spanien",
+            "es": "España"
+          }
+        },
+        {
+          "value": "PL",
+          "label": {
+            "en": "Poland",
+            "fr": "Pologne",
+            "de": "Polen",
+            "es": "Polonia"
+          }
+        },
+        {
+          "value": "DK1",
+          "label": {
+            "en": "Denmark West (DK1)",
+            "fr": "Danemark Ouest (DK1)",
+            "de": "Dänemark West (DK1)",
+            "es": "Dinamarca Oeste (DK1)"
+          }
+        },
+        {
+          "value": "FI",
+          "label": {
+            "en": "Finland",
+            "fr": "Finlande",
+            "de": "Finnland",
+            "es": "Finlandia"
+          }
+        }
+      ]
+    },
+    {
+      "key": "refresh_interval",
+      "type": "number",
+      "label": {
+        "en": "Download interval (minutes)",
+        "fr": "Intervalle de téléchargement (minutes)",
+        "de": "Download-Intervall (Minuten)",
+        "es": "Intervalo de descarga (minutos)"
+      },
+      "description": {
+        "en": "How often the prices are downloaded (15 to 360 minutes). While tomorrow’s prices are awaited, the integration retries every 15 minutes.",
+        "fr": "Fréquence de téléchargement des prix (15 à 360 minutes). En attendant les prix du lendemain, l’intégration réessaie toutes les 15 minutes.",
+        "de": "Wie oft die Preise geladen werden (15 bis 360 Minuten). Solange die Preise für morgen fehlen, versucht es die Integration alle 15 Minuten.",
+        "es": "Frecuencia de descarga de los precios (15 a 360 minutos). Mientras se esperan los precios de mañana, la integración reintenta cada 15 minutos."
+      },
+      "required": false,
+      "default": 60,
+      "min": 15,
+      "max": 360
+    },
+    {
+      "key": "markup",
+      "type": "number",
+      "label": {
+        "en": "Markup shown (€/kWh)",
+        "fr": "Majoration affichée (€/kWh)",
+        "de": "Angezeigter Aufschlag (€/kWh)",
+        "es": "Recargo mostrado (€/kWh)"
+      },
+      "description": {
+        "en": "Added to the prices shown by the device and the widgets (margin, grid fees). Contract costs use the contract template instead.",
+        "fr": "Ajoutée aux prix affichés par l’appareil et les widgets (marge, acheminement). Les coûts du contrat utilisent le modèle de contrat.",
+        "de": "Wird zu den vom Gerät und den Widgets angezeigten Preisen addiert (Marge, Netzentgelte). Vertragskosten nutzen die Vertragsvorlage.",
+        "es": "Se suma a los precios mostrados por el dispositivo y los widgets (margen, peajes). Los costes del contrato usan la plantilla de contrato."
+      },
+      "placeholder": {
+        "en": "e.g. 0.12",
+        "fr": "ex. 0,12",
+        "de": "z. B. 0,12",
+        "es": "p. ej. 0,12"
+      },
+      "required": false,
+      "default": 0,
+      "min": -1,
+      "max": 5
+    },
+    {
+      "key": "vat",
+      "type": "number",
+      "label": {
+        "en": "VAT shown (%)",
+        "fr": "TVA affichée (%)",
+        "de": "Angezeigte MwSt. (%)",
+        "es": "IVA mostrado (%)"
+      },
+      "description": {
+        "en": "Applied on top of the shown prices (0 = before tax).",
+        "fr": "Appliquée aux prix affichés (0 = hors taxes).",
+        "de": "Auf die angezeigten Preise angewendet (0 = netto).",
+        "es": "Se aplica a los precios mostrados (0 = sin impuestos)."
+      },
+      "required": false,
+      "default": 0,
+      "min": 0,
+      "max": 50
+    },
+    {
+      "key": "display_unit",
+      "type": "select",
+      "label": {
+        "en": "Price unit in widgets",
+        "fr": "Unité des prix des widgets",
+        "de": "Preiseinheit in Widgets",
+        "es": "Unidad de precio en widgets"
+      },
+      "required": false,
+      "default": "kwh",
+      "options": [
+        {
+          "value": "kwh",
+          "label": {
+            "en": "€/kWh",
+            "fr": "€/kWh",
+            "de": "€/kWh",
+            "es": "€/kWh"
+          }
+        },
+        {
+          "value": "mwh",
+          "label": {
+            "en": "€/MWh",
+            "fr": "€/MWh",
+            "de": "€/MWh",
+            "es": "€/MWh"
+          }
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_connection",
+      "label": {
+        "en": "Test the price API",
+        "fr": "Tester l’API des prix",
+        "de": "Preis-API testen",
+        "es": "Probar la API de precios"
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "key": "refresh_prices",
+      "label": {
+        "en": "Download the prices now",
+        "fr": "Télécharger les prix maintenant",
+        "de": "Preise jetzt laden",
+        "es": "Descargar los precios ahora"
+      },
+      "timeout_seconds": 30
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "price_level_changed",
+      "label": {
+        "en": "Spot price level changed",
+        "fr": "Niveau du prix spot modifié",
+        "de": "Spotpreisniveau geändert",
+        "es": "Nivel del precio spot cambiado"
+      },
+      "description": {
+        "en": "At a quarter-hour, the price moved to another level of the day (negative, very cheap… very expensive).",
+        "fr": "À un quart d’heure, le prix passe à un autre niveau de la journée (négatif, très bas… très élevé).",
+        "de": "Zur Viertelstunde wechselt der Preis in eine andere Stufe des Tages (negativ, sehr günstig … sehr teuer).",
+        "es": "En un cuarto de hora, el precio pasa a otro nivel del día (negativo, muy barato… muy caro)."
+      },
+      "fields": [
+        {
+          "key": "level",
+          "type": "multi_select",
+          "label": {
+            "en": "New level",
+            "fr": "Nouveau niveau",
+            "de": "Neue Stufe",
+            "es": "Nuevo nivel"
+          },
+          "options": [
+            {
+              "value": "negative",
+              "label": {
+                "en": "Negative",
+                "fr": "Négatif",
+                "de": "Negativ",
+                "es": "Negativo"
+              }
+            },
+            {
+              "value": "very_cheap",
+              "label": {
+                "en": "Very cheap",
+                "fr": "Très bas",
+                "de": "Sehr günstig",
+                "es": "Muy barato"
+              }
+            },
+            {
+              "value": "cheap",
+              "label": {
+                "en": "Cheap",
+                "fr": "Bas",
+                "de": "Günstig",
+                "es": "Barato"
+              }
+            },
+            {
+              "value": "normal",
+              "label": {
+                "en": "Normal",
+                "fr": "Normal",
+                "de": "Normal",
+                "es": "Normal"
+              }
+            },
+            {
+              "value": "expensive",
+              "label": {
+                "en": "Expensive",
+                "fr": "Élevé",
+                "de": "Teuer",
+                "es": "Caro"
+              }
+            },
+            {
+              "value": "very_expensive",
+              "label": {
+                "en": "Very expensive",
+                "fr": "Très élevé",
+                "de": "Sehr teuer",
+                "es": "Muy caro"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "level",
+          "type": "string",
+          "label": {
+            "en": "Price level",
+            "fr": "Niveau de prix",
+            "de": "Preisniveau",
+            "es": "Nivel de precio"
+          }
+        },
+        {
+          "key": "previous_level",
+          "type": "string",
+          "label": {
+            "en": "Previous level",
+            "fr": "Niveau précédent",
+            "de": "Vorherige Stufe",
+            "es": "Nivel anterior"
+          }
+        },
+        {
+          "key": "price",
+          "type": "number",
+          "label": {
+            "en": "Spot price (€/kWh)",
+            "fr": "Prix spot (€/kWh)",
+            "de": "Spotpreis (€/kWh)",
+            "es": "Precio spot (€/kWh)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cheapest_window_started",
+      "label": {
+        "en": "Cheapest hours started",
+        "fr": "Heures les moins chères commencées",
+        "de": "Günstigste Stunden begonnen",
+        "es": "Horas más baratas iniciadas"
+      },
+      "description": {
+        "en": "The cheapest window of the day of the chosen length starts now: the moment to run the dishwasher or charge the car.",
+        "fr": "Le créneau le moins cher de la journée de la durée choisie commence : le moment de lancer le lave-vaisselle ou de charger la voiture.",
+        "de": "Das günstigste Zeitfenster des Tages mit der gewählten Dauer beginnt: Zeit für Geschirrspüler oder Autoladen.",
+        "es": "Empieza la franja más barata del día de la duración elegida: el momento de poner el lavavajillas o cargar el coche."
+      },
+      "fields": [
+        {
+          "key": "duration",
+          "type": "select",
+          "label": {
+            "en": "Window length",
+            "fr": "Durée du créneau",
+            "de": "Dauer des Zeitfensters",
+            "es": "Duración de la franja"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": {
+                "en": "1 h",
+                "fr": "1 h",
+                "de": "1 Std.",
+                "es": "1 h"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "2 h",
+                "fr": "2 h",
+                "de": "2 Std.",
+                "es": "2 h"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "en": "3 h",
+                "fr": "3 h",
+                "de": "3 Std.",
+                "es": "3 h"
+              }
+            },
+            {
+              "value": "4",
+              "label": {
+                "en": "4 h",
+                "fr": "4 h",
+                "de": "4 Std.",
+                "es": "4 h"
+              }
+            },
+            {
+              "value": "6",
+              "label": {
+                "en": "6 h",
+                "fr": "6 h",
+                "de": "6 Std.",
+                "es": "6 h"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "duration",
+          "type": "string",
+          "label": {
+            "en": "Window length (hours)",
+            "fr": "Durée du créneau (heures)",
+            "de": "Dauer (Stunden)",
+            "es": "Duración (horas)"
+          }
+        },
+        {
+          "key": "average_price",
+          "type": "number",
+          "label": {
+            "en": "Average spot price (€/kWh)",
+            "fr": "Prix spot moyen (€/kWh)",
+            "de": "Mittlerer Spotpreis (€/kWh)",
+            "es": "Precio spot medio (€/kWh)"
+          }
+        },
+        {
+          "key": "ends_at",
+          "type": "string",
+          "label": {
+            "en": "End time (HH:MM)",
+            "fr": "Heure de fin (HH:MM)",
+            "de": "Endzeit (HH:MM)",
+            "es": "Hora de fin (HH:MM)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "tomorrow_prices_available",
+      "label": {
+        "en": "Tomorrow’s prices published",
+        "fr": "Prix de demain publiés",
+        "de": "Preise für morgen veröffentlicht",
+        "es": "Precios de mañana publicados"
+      },
+      "description": {
+        "en": "The day-ahead auction results for tomorrow are available (around 13:00 CET).",
+        "fr": "Les résultats de l’enchère day-ahead de demain sont disponibles (vers 13 h).",
+        "de": "Die Day-Ahead-Ergebnisse für morgen liegen vor (gegen 13 Uhr MEZ).",
+        "es": "Los resultados de la subasta day-ahead de mañana están disponibles (hacia las 13:00 CET)."
+      },
+      "variables": [
+        {
+          "key": "min_price",
+          "type": "number",
+          "label": {
+            "en": "Minimum (€/kWh)",
+            "fr": "Minimum (€/kWh)",
+            "de": "Minimum (€/kWh)",
+            "es": "Mínimo (€/kWh)"
+          }
+        },
+        {
+          "key": "max_price",
+          "type": "number",
+          "label": {
+            "en": "Maximum (€/kWh)",
+            "fr": "Maximum (€/kWh)",
+            "de": "Maximum (€/kWh)",
+            "es": "Máximo (€/kWh)"
+          }
+        },
+        {
+          "key": "average_price",
+          "type": "number",
+          "label": {
+            "en": "Average (€/kWh)",
+            "fr": "Moyenne (€/kWh)",
+            "de": "Durchschnitt (€/kWh)",
+            "es": "Media (€/kWh)"
+          }
+        },
+        {
+          "key": "cheapest_hour",
+          "type": "string",
+          "label": {
+            "en": "Cheapest hour starts at",
+            "fr": "Heure la moins chère à",
+            "de": "Günstigste Stunde ab",
+            "es": "Hora más barata a las"
+          }
+        },
+        {
+          "key": "negative_prices",
+          "type": "boolean",
+          "label": {
+            "en": "Negative prices tomorrow",
+            "fr": "Prix négatifs demain",
+            "de": "Negative Preise morgen",
+            "es": "Precios negativos mañana"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "get_current_price",
+      "label": {
+        "en": "Get the spot price",
+        "fr": "Lire le prix spot",
+        "de": "Spotpreis abrufen",
+        "es": "Obtener el precio spot"
+      },
+      "description": {
+        "en": "Current price, its level and the next quarter-hour price.",
+        "fr": "Prix actuel, son niveau et le prix du quart d’heure suivant.",
+        "de": "Aktueller Preis, seine Stufe und der Preis der nächsten Viertelstunde.",
+        "es": "Precio actual, su nivel y el precio del siguiente cuarto de hora."
+      },
+      "timeout_seconds": 10,
+      "outputs": [
+        {
+          "key": "found",
+          "type": "boolean",
+          "label": {
+            "en": "Price known",
+            "fr": "Prix connu",
+            "de": "Preis bekannt",
+            "es": "Precio conocido"
+          }
+        },
+        {
+          "key": "price",
+          "type": "number",
+          "label": {
+            "en": "Price shown (€/kWh)",
+            "fr": "Prix affiché (€/kWh)",
+            "de": "Angezeigter Preis (€/kWh)",
+            "es": "Precio mostrado (€/kWh)"
+          }
+        },
+        {
+          "key": "spot_price",
+          "type": "number",
+          "label": {
+            "en": "Raw spot price (€/kWh)",
+            "fr": "Prix spot brut (€/kWh)",
+            "de": "Reiner Spotpreis (€/kWh)",
+            "es": "Precio spot bruto (€/kWh)"
+          }
+        },
+        {
+          "key": "level",
+          "type": "string",
+          "label": {
+            "en": "Price level",
+            "fr": "Niveau de prix",
+            "de": "Preisniveau",
+            "es": "Nivel de precio"
+          }
+        },
+        {
+          "key": "next_price",
+          "type": "number",
+          "label": {
+            "en": "Next quarter-hour (€/kWh)",
+            "fr": "Quart d’heure suivant (€/kWh)",
+            "de": "Nächste Viertelstunde (€/kWh)",
+            "es": "Siguiente cuarto de hora (€/kWh)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "find_cheapest_window",
+      "label": {
+        "en": "Find the cheapest hours",
+        "fr": "Trouver les heures les moins chères",
+        "de": "Günstigste Stunden finden",
+        "es": "Buscar las horas más baratas"
+      },
+      "description": {
+        "en": "Cheapest contiguous window of the given length.",
+        "fr": "Créneau continu le moins cher de la durée donnée.",
+        "de": "Günstigstes zusammenhängendes Zeitfenster der angegebenen Dauer.",
+        "es": "Franja continua más barata de la duración indicada."
+      },
+      "timeout_seconds": 10,
+      "fields": [
+        {
+          "key": "duration_hours",
+          "type": "number",
+          "label": {
+            "en": "Length (hours)",
+            "fr": "Durée (heures)",
+            "de": "Dauer (Stunden)",
+            "es": "Duración (horas)"
+          },
+          "required": true,
+          "default": 2,
+          "min": 0.25,
+          "max": 24
+        },
+        {
+          "key": "period",
+          "type": "select",
+          "label": {
+            "en": "Search in",
+            "fr": "Chercher dans",
+            "de": "Suchen in",
+            "es": "Buscar en"
+          },
+          "required": true,
+          "default": "next_24h",
+          "options": [
+            {
+              "value": "next_24h",
+              "label": {
+                "en": "Next 24 hours",
+                "fr": "Prochaines 24 heures",
+                "de": "Nächste 24 Stunden",
+                "es": "Próximas 24 horas"
+              }
+            },
+            {
+              "value": "today",
+              "label": {
+                "en": "Rest of today",
+                "fr": "Reste de la journée",
+                "de": "Rest des Tages",
+                "es": "Resto del día"
+              }
+            },
+            {
+              "value": "tomorrow",
+              "label": {
+                "en": "Tomorrow",
+                "fr": "Demain",
+                "de": "Morgen",
+                "es": "Mañana"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "found",
+          "type": "boolean",
+          "label": {
+            "en": "Window found",
+            "fr": "Créneau trouvé",
+            "de": "Zeitfenster gefunden",
+            "es": "Franja encontrada"
+          }
+        },
+        {
+          "key": "start_time",
+          "type": "string",
+          "label": {
+            "en": "Start (HH:MM)",
+            "fr": "Début (HH:MM)",
+            "de": "Beginn (HH:MM)",
+            "es": "Inicio (HH:MM)"
+          }
+        },
+        {
+          "key": "end_time",
+          "type": "string",
+          "label": {
+            "en": "End (HH:MM)",
+            "fr": "Fin (HH:MM)",
+            "de": "Ende (HH:MM)",
+            "es": "Fin (HH:MM)"
+          }
+        },
+        {
+          "key": "starts_at",
+          "type": "string",
+          "label": {
+            "en": "Start (ISO date)",
+            "fr": "Début (date ISO)",
+            "de": "Beginn (ISO-Datum)",
+            "es": "Inicio (fecha ISO)"
+          }
+        },
+        {
+          "key": "minutes_until_start",
+          "type": "number",
+          "label": {
+            "en": "Minutes until start",
+            "fr": "Minutes avant le début",
+            "de": "Minuten bis Beginn",
+            "es": "Minutos hasta el inicio"
+          }
+        },
+        {
+          "key": "average_price",
+          "type": "number",
+          "label": {
+            "en": "Average price (€/kWh)",
+            "fr": "Prix moyen (€/kWh)",
+            "de": "Mittlerer Preis (€/kWh)",
+            "es": "Precio medio (€/kWh)"
+          }
+        },
+        {
+          "key": "starts_now",
+          "type": "boolean",
+          "label": {
+            "en": "Starts now",
+            "fr": "Commence maintenant",
+            "de": "Beginnt jetzt",
+            "es": "Empieza ahora"
+          }
+        }
+      ]
+    },
+    {
+      "key": "check_cheap_hours",
+      "label": {
+        "en": "Is it a cheap hour?",
+        "fr": "Est-ce une heure creuse ?",
+        "de": "Ist es eine günstige Stunde?",
+        "es": "¿Es una hora barata?"
+      },
+      "description": {
+        "en": "Tells whether now is among the N cheapest hours of the day.",
+        "fr": "Indique si maintenant fait partie des N heures les moins chères du jour.",
+        "de": "Gibt an, ob jetzt zu den N günstigsten Stunden des Tages gehört.",
+        "es": "Indica si ahora está entre las N horas más baratas del día."
+      },
+      "timeout_seconds": 10,
+      "fields": [
+        {
+          "key": "hours",
+          "type": "number",
+          "label": {
+            "en": "Number of cheapest hours",
+            "fr": "Nombre d’heures les moins chères",
+            "de": "Anzahl günstigster Stunden",
+            "es": "Número de horas más baratas"
+          },
+          "required": true,
+          "default": 4,
+          "min": 0.25,
+          "max": 24
+        }
+      ],
+      "outputs": [
+        {
+          "key": "found",
+          "type": "boolean",
+          "label": {
+            "en": "Price known",
+            "fr": "Prix connu",
+            "de": "Preis bekannt",
+            "es": "Precio conocido"
+          }
+        },
+        {
+          "key": "is_cheap",
+          "type": "boolean",
+          "label": {
+            "en": "Among the cheapest",
+            "fr": "Parmi les moins chères",
+            "de": "Unter den günstigsten",
+            "es": "Entre las más baratas"
+          }
+        },
+        {
+          "key": "rank",
+          "type": "number",
+          "label": {
+            "en": "Rank of the quarter-hour (1 = cheapest)",
+            "fr": "Rang du quart d’heure (1 = le moins cher)",
+            "de": "Rang der Viertelstunde (1 = günstigste)",
+            "es": "Posición del cuarto de hora (1 = más barato)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "refresh_prices",
+      "label": {
+        "en": "Download the spot prices",
+        "fr": "Télécharger les prix spot",
+        "de": "Spotpreise laden",
+        "es": "Descargar los precios spot"
+      },
+      "timeout_seconds": 30,
+      "outputs": [
+        {
+          "key": "count",
+          "type": "number",
+          "label": {
+            "en": "Known quarter-hours",
+            "fr": "Quarts d’heure connus",
+            "de": "Bekannte Viertelstunden",
+            "es": "Cuartos de hora conocidos"
+          }
+        },
+        {
+          "key": "tomorrow_available",
+          "type": "boolean",
+          "label": {
+            "en": "Tomorrow available",
+            "fr": "Demain disponible",
+            "de": "Morgen verfügbar",
+            "es": "Mañana disponible"
+          }
+        }
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "key": "spot_price",
+      "label": {
+        "en": "Spot price",
+        "fr": "Prix spot",
+        "de": "Spotpreis",
+        "es": "Precio spot"
+      },
+      "description": {
+        "en": "Current price, curve of today and tomorrow, price level.",
+        "fr": "Prix actuel, courbe du jour et du lendemain, niveau de prix.",
+        "de": "Aktueller Preis, Kurve für heute und morgen, Preisniveau.",
+        "es": "Precio actual, curva de hoy y mañana, nivel de precio."
+      },
+      "icon": "zap",
+      "settings": [
+        {
+          "key": "show_tomorrow",
+          "type": "boolean",
+          "label": {
+            "en": "Show tomorrow’s curve",
+            "fr": "Afficher la courbe de demain",
+            "de": "Kurve für morgen zeigen",
+            "es": "Mostrar la curva de mañana"
+          },
+          "default": true
+        }
+      ]
+    },
+    {
+      "key": "cheapest_windows",
+      "label": {
+        "en": "Cheapest hours",
+        "fr": "Heures moins chères",
+        "de": "Günstigste Stunden",
+        "es": "Horas más baratas"
+      },
+      "description": {
+        "en": "Cheapest 1 to 4-hour windows of the next 24 hours.",
+        "fr": "Créneaux de 1 à 4 h les moins chers des 24 prochaines heures.",
+        "de": "Günstigste 1- bis 4-Stunden-Fenster der nächsten 24 Stunden.",
+        "es": "Franjas de 1 a 4 h más baratas de las próximas 24 horas."
+      },
+      "icon": "clock",
+      "action_timeout_seconds": 30
+    }
+  ],
+  "energy_contracts": {
+    "templates": [
+      {
+        "key": "epex-spot-fr",
+        "name": {
+          "en": "EPEX Spot dynamic – France",
+          "fr": "EPEX Spot dynamique – France",
+          "de": "EPEX Spot dynamisch – Frankreich",
+          "es": "EPEX Spot dinámico – Francia"
+        },
+        "description": {
+          "en": "Dynamic tariff indexed on the day-ahead price of the FR zone, every 15 minutes: spot price × coefficient + margin, grid fees, subscription and VAT.",
+          "fr": "Offre dynamique indexée sur le prix day-ahead de la zone FR, au quart d'heure : prix spot × coefficient + marge, acheminement, abonnement et TVA.",
+          "de": "Dynamischer Tarif auf Basis des Day-Ahead-Preises der Zone FR, viertelstündlich: Spotpreis × Faktor + Marge, Netzentgelte, Grundgebühr und MwSt.",
+          "es": "Tarifa dinámica indexada al precio day-ahead de la zona FR, cada 15 minutos: precio spot × coeficiente + margen, peajes, término fijo e IVA."
+        },
+        "country": "FR",
+        "currency": "EUR",
+        "timezone": "Europe/Paris",
+        "pricing_mode": "rules",
+        "version": "2026-10-16",
+        "calendars": ["spot-fr"],
+        "inputs": [
+          {
+            "key": "multiplier",
+            "type": "number",
+            "label": {
+              "en": "Spot price coefficient",
+              "fr": "Coefficient sur le prix spot",
+              "de": "Faktor auf den Spotpreis",
+              "es": "Coeficiente del precio spot"
+            },
+            "description": {
+              "en": "Multiplies the spot price (1 = the raw market price).",
+              "fr": "Multiplie le prix spot (1 = le prix de marché brut).",
+              "de": "Multipliziert den Spotpreis (1 = reiner Marktpreis).",
+              "es": "Multiplica el precio spot (1 = precio de mercado)."
+            },
+            "default": 1,
+            "required": true
+          },
+          {
+            "key": "margin",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Supplier margin",
+              "fr": "Marge du fournisseur",
+              "de": "Marge des Anbieters",
+              "es": "Margen del comercializador"
+            },
+            "description": {
+              "en": "Added to every kWh, before VAT.",
+              "fr": "Ajoutée à chaque kWh, hors TVA.",
+              "de": "Auf jede kWh aufgeschlagen, ohne MwSt.",
+              "es": "Se suma a cada kWh, sin IVA."
+            },
+            "default": 0.01,
+            "required": true
+          },
+          {
+            "key": "grid_fee",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Grid fees and energy taxes",
+              "fr": "Acheminement et taxes",
+              "de": "Netzentgelte und Abgaben",
+              "es": "Peajes y cargos"
+            },
+            "description": {
+              "en": "Per kWh, before VAT.",
+              "fr": "Par kWh, hors TVA.",
+              "de": "Pro kWh, ohne MwSt.",
+              "es": "Por kWh, sin IVA."
+            },
+            "default": 0.05,
+            "required": true
+          },
+          {
+            "key": "subscription",
+            "type": "number",
+            "unit": "EUR/month",
+            "label": {
+              "en": "Subscription",
+              "fr": "Abonnement",
+              "de": "Grundgebühr",
+              "es": "Término fijo"
+            },
+            "description": {
+              "en": "Fixed monthly fee, before VAT.",
+              "fr": "Part fixe mensuelle, hors TVA.",
+              "de": "Monatliche Grundgebühr, ohne MwSt.",
+              "es": "Cuota fija mensual, sin IVA."
+            },
+            "default": 10,
+            "required": true
+          },
+          {
+            "key": "vat",
+            "type": "number",
+            "unit": "%",
+            "label": {
+              "en": "VAT",
+              "fr": "TVA",
+              "de": "MwSt.",
+              "es": "IVA"
+            },
+            "default": 20,
+            "required": true
+          },
+          {
+            "key": "fallback_price",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Price when no spot price is known",
+              "fr": "Prix si aucun prix spot connu",
+              "de": "Preis ohne bekannten Spotpreis",
+              "es": "Precio sin precio spot conocido"
+            },
+            "description": {
+              "en": "Energy price used for an interval without a published spot price.",
+              "fr": "Prix de l’énergie utilisé pour un intervalle sans prix spot publié.",
+              "de": "Energiepreis für ein Intervall ohne veröffentlichten Spotpreis.",
+              "es": "Precio de la energía para un intervalo sin precio spot publicado."
+            },
+            "default": 0.15,
+            "required": true
+          }
+        ],
+        "tariff": {
+          "tariff_version": 1,
+          "calendars": ["spot-fr"],
+          "components": [
+            {
+              "key": "energy",
+              "kind": "consumption",
+              "label": "EPEX Spot",
+              "rules": [
+                {
+                  "label": "Spot FR",
+                  "price_from_calendar": "spot-fr",
+                  "multiplier": "{{input:multiplier}}",
+                  "offset": "{{input:margin}}"
+                }
+              ],
+              "fallback": {
+                "label": "Fallback",
+                "price": "{{input:fallback_price}}"
+              }
+            },
+            {
+              "key": "grid",
+              "kind": "consumption",
+              "label": "Grid fees",
+              "rules": [
+                {
+                  "label": "Grid fees",
+                  "price": "{{input:grid_fee}}"
+                }
+              ]
+            },
+            {
+              "key": "subscription",
+              "kind": "fixed",
+              "label": "Subscription",
+              "amount": "{{input:subscription}}",
+              "per": "month"
+            },
+            {
+              "key": "vat",
+              "kind": "tax",
+              "label": "VAT",
+              "rate": "{{input:vat}}",
+              "applies_to": ["energy", "grid", "subscription"]
+            }
+          ]
+        }
+      },
+      {
+        "key": "epex-spot-de-lu",
+        "name": {
+          "en": "EPEX Spot dynamic – Germany / Luxembourg",
+          "fr": "EPEX Spot dynamique – Allemagne / Luxembourg",
+          "de": "EPEX Spot dynamisch – Deutschland / Luxemburg",
+          "es": "EPEX Spot dinámico – Alemania / Luxemburgo"
+        },
+        "description": {
+          "en": "Dynamic tariff indexed on the day-ahead price of the DE-LU zone, every 15 minutes: spot price × coefficient + margin, grid fees, subscription and VAT.",
+          "fr": "Offre dynamique indexée sur le prix day-ahead de la zone DE-LU, au quart d'heure : prix spot × coefficient + marge, acheminement, abonnement et TVA.",
+          "de": "Dynamischer Tarif auf Basis des Day-Ahead-Preises der Zone DE-LU, viertelstündlich: Spotpreis × Faktor + Marge, Netzentgelte, Grundgebühr und MwSt.",
+          "es": "Tarifa dinámica indexada al precio day-ahead de la zona DE-LU, cada 15 minutos: precio spot × coeficiente + margen, peajes, término fijo e IVA."
+        },
+        "country": "DE",
+        "currency": "EUR",
+        "timezone": "Europe/Berlin",
+        "pricing_mode": "rules",
+        "version": "2026-10-16",
+        "calendars": ["spot-de"],
+        "inputs": [
+          {
+            "key": "multiplier",
+            "type": "number",
+            "label": {
+              "en": "Spot price coefficient",
+              "fr": "Coefficient sur le prix spot",
+              "de": "Faktor auf den Spotpreis",
+              "es": "Coeficiente del precio spot"
+            },
+            "description": {
+              "en": "Multiplies the spot price (1 = the raw market price).",
+              "fr": "Multiplie le prix spot (1 = le prix de marché brut).",
+              "de": "Multipliziert den Spotpreis (1 = reiner Marktpreis).",
+              "es": "Multiplica el precio spot (1 = precio de mercado)."
+            },
+            "default": 1,
+            "required": true
+          },
+          {
+            "key": "margin",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Supplier margin",
+              "fr": "Marge du fournisseur",
+              "de": "Marge des Anbieters",
+              "es": "Margen del comercializador"
+            },
+            "description": {
+              "en": "Added to every kWh, before VAT.",
+              "fr": "Ajoutée à chaque kWh, hors TVA.",
+              "de": "Auf jede kWh aufgeschlagen, ohne MwSt.",
+              "es": "Se suma a cada kWh, sin IVA."
+            },
+            "default": 0.01,
+            "required": true
+          },
+          {
+            "key": "grid_fee",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Grid fees and energy taxes",
+              "fr": "Acheminement et taxes",
+              "de": "Netzentgelte und Abgaben",
+              "es": "Peajes y cargos"
+            },
+            "description": {
+              "en": "Per kWh, before VAT.",
+              "fr": "Par kWh, hors TVA.",
+              "de": "Pro kWh, ohne MwSt.",
+              "es": "Por kWh, sin IVA."
+            },
+            "default": 0.05,
+            "required": true
+          },
+          {
+            "key": "subscription",
+            "type": "number",
+            "unit": "EUR/month",
+            "label": {
+              "en": "Subscription",
+              "fr": "Abonnement",
+              "de": "Grundgebühr",
+              "es": "Término fijo"
+            },
+            "description": {
+              "en": "Fixed monthly fee, before VAT.",
+              "fr": "Part fixe mensuelle, hors TVA.",
+              "de": "Monatliche Grundgebühr, ohne MwSt.",
+              "es": "Cuota fija mensual, sin IVA."
+            },
+            "default": 10,
+            "required": true
+          },
+          {
+            "key": "vat",
+            "type": "number",
+            "unit": "%",
+            "label": {
+              "en": "VAT",
+              "fr": "TVA",
+              "de": "MwSt.",
+              "es": "IVA"
+            },
+            "default": 19,
+            "required": true
+          },
+          {
+            "key": "fallback_price",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Price when no spot price is known",
+              "fr": "Prix si aucun prix spot connu",
+              "de": "Preis ohne bekannten Spotpreis",
+              "es": "Precio sin precio spot conocido"
+            },
+            "description": {
+              "en": "Energy price used for an interval without a published spot price.",
+              "fr": "Prix de l’énergie utilisé pour un intervalle sans prix spot publié.",
+              "de": "Energiepreis für ein Intervall ohne veröffentlichten Spotpreis.",
+              "es": "Precio de la energía para un intervalo sin precio spot publicado."
+            },
+            "default": 0.15,
+            "required": true
+          }
+        ],
+        "tariff": {
+          "tariff_version": 1,
+          "calendars": ["spot-de"],
+          "components": [
+            {
+              "key": "energy",
+              "kind": "consumption",
+              "label": "EPEX Spot",
+              "rules": [
+                {
+                  "label": "Spot DE-LU",
+                  "price_from_calendar": "spot-de",
+                  "multiplier": "{{input:multiplier}}",
+                  "offset": "{{input:margin}}"
+                }
+              ],
+              "fallback": {
+                "label": "Fallback",
+                "price": "{{input:fallback_price}}"
+              }
+            },
+            {
+              "key": "grid",
+              "kind": "consumption",
+              "label": "Grid fees",
+              "rules": [
+                {
+                  "label": "Grid fees",
+                  "price": "{{input:grid_fee}}"
+                }
+              ]
+            },
+            {
+              "key": "subscription",
+              "kind": "fixed",
+              "label": "Subscription",
+              "amount": "{{input:subscription}}",
+              "per": "month"
+            },
+            {
+              "key": "vat",
+              "kind": "tax",
+              "label": "VAT",
+              "rate": "{{input:vat}}",
+              "applies_to": ["energy", "grid", "subscription"]
+            }
+          ]
+        }
+      },
+      {
+        "key": "epex-spot-be",
+        "name": {
+          "en": "EPEX Spot dynamic – Belgium",
+          "fr": "EPEX Spot dynamique – Belgique",
+          "de": "EPEX Spot dynamisch – Belgien",
+          "es": "EPEX Spot dinámico – Bélgica"
+        },
+        "description": {
+          "en": "Dynamic tariff indexed on the day-ahead price of the BE zone, every 15 minutes: spot price × coefficient + margin, grid fees, subscription and VAT.",
+          "fr": "Offre dynamique indexée sur le prix day-ahead de la zone BE, au quart d'heure : prix spot × coefficient + marge, acheminement, abonnement et TVA.",
+          "de": "Dynamischer Tarif auf Basis des Day-Ahead-Preises der Zone BE, viertelstündlich: Spotpreis × Faktor + Marge, Netzentgelte, Grundgebühr und MwSt.",
+          "es": "Tarifa dinámica indexada al precio day-ahead de la zona BE, cada 15 minutos: precio spot × coeficiente + margen, peajes, término fijo e IVA."
+        },
+        "country": "BE",
+        "currency": "EUR",
+        "timezone": "Europe/Brussels",
+        "pricing_mode": "rules",
+        "version": "2026-10-16",
+        "calendars": ["spot-be"],
+        "inputs": [
+          {
+            "key": "multiplier",
+            "type": "number",
+            "label": {
+              "en": "Spot price coefficient",
+              "fr": "Coefficient sur le prix spot",
+              "de": "Faktor auf den Spotpreis",
+              "es": "Coeficiente del precio spot"
+            },
+            "description": {
+              "en": "Multiplies the spot price (1 = the raw market price).",
+              "fr": "Multiplie le prix spot (1 = le prix de marché brut).",
+              "de": "Multipliziert den Spotpreis (1 = reiner Marktpreis).",
+              "es": "Multiplica el precio spot (1 = precio de mercado)."
+            },
+            "default": 1,
+            "required": true
+          },
+          {
+            "key": "margin",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Supplier margin",
+              "fr": "Marge du fournisseur",
+              "de": "Marge des Anbieters",
+              "es": "Margen del comercializador"
+            },
+            "description": {
+              "en": "Added to every kWh, before VAT.",
+              "fr": "Ajoutée à chaque kWh, hors TVA.",
+              "de": "Auf jede kWh aufgeschlagen, ohne MwSt.",
+              "es": "Se suma a cada kWh, sin IVA."
+            },
+            "default": 0.01,
+            "required": true
+          },
+          {
+            "key": "grid_fee",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Grid fees and energy taxes",
+              "fr": "Acheminement et taxes",
+              "de": "Netzentgelte und Abgaben",
+              "es": "Peajes y cargos"
+            },
+            "description": {
+              "en": "Per kWh, before VAT.",
+              "fr": "Par kWh, hors TVA.",
+              "de": "Pro kWh, ohne MwSt.",
+              "es": "Por kWh, sin IVA."
+            },
+            "default": 0.05,
+            "required": true
+          },
+          {
+            "key": "subscription",
+            "type": "number",
+            "unit": "EUR/month",
+            "label": {
+              "en": "Subscription",
+              "fr": "Abonnement",
+              "de": "Grundgebühr",
+              "es": "Término fijo"
+            },
+            "description": {
+              "en": "Fixed monthly fee, before VAT.",
+              "fr": "Part fixe mensuelle, hors TVA.",
+              "de": "Monatliche Grundgebühr, ohne MwSt.",
+              "es": "Cuota fija mensual, sin IVA."
+            },
+            "default": 10,
+            "required": true
+          },
+          {
+            "key": "vat",
+            "type": "number",
+            "unit": "%",
+            "label": {
+              "en": "VAT",
+              "fr": "TVA",
+              "de": "MwSt.",
+              "es": "IVA"
+            },
+            "default": 6,
+            "required": true
+          },
+          {
+            "key": "fallback_price",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Price when no spot price is known",
+              "fr": "Prix si aucun prix spot connu",
+              "de": "Preis ohne bekannten Spotpreis",
+              "es": "Precio sin precio spot conocido"
+            },
+            "description": {
+              "en": "Energy price used for an interval without a published spot price.",
+              "fr": "Prix de l’énergie utilisé pour un intervalle sans prix spot publié.",
+              "de": "Energiepreis für ein Intervall ohne veröffentlichten Spotpreis.",
+              "es": "Precio de la energía para un intervalo sin precio spot publicado."
+            },
+            "default": 0.15,
+            "required": true
+          }
+        ],
+        "tariff": {
+          "tariff_version": 1,
+          "calendars": ["spot-be"],
+          "components": [
+            {
+              "key": "energy",
+              "kind": "consumption",
+              "label": "EPEX Spot",
+              "rules": [
+                {
+                  "label": "Spot BE",
+                  "price_from_calendar": "spot-be",
+                  "multiplier": "{{input:multiplier}}",
+                  "offset": "{{input:margin}}"
+                }
+              ],
+              "fallback": {
+                "label": "Fallback",
+                "price": "{{input:fallback_price}}"
+              }
+            },
+            {
+              "key": "grid",
+              "kind": "consumption",
+              "label": "Grid fees",
+              "rules": [
+                {
+                  "label": "Grid fees",
+                  "price": "{{input:grid_fee}}"
+                }
+              ]
+            },
+            {
+              "key": "subscription",
+              "kind": "fixed",
+              "label": "Subscription",
+              "amount": "{{input:subscription}}",
+              "per": "month"
+            },
+            {
+              "key": "vat",
+              "kind": "tax",
+              "label": "VAT",
+              "rate": "{{input:vat}}",
+              "applies_to": ["energy", "grid", "subscription"]
+            }
+          ]
+        }
+      },
+      {
+        "key": "epex-spot-nl",
+        "name": {
+          "en": "EPEX Spot dynamic – Netherlands",
+          "fr": "EPEX Spot dynamique – Pays-Bas",
+          "de": "EPEX Spot dynamisch – Niederlande",
+          "es": "EPEX Spot dinámico – Países Bajos"
+        },
+        "description": {
+          "en": "Dynamic tariff indexed on the day-ahead price of the NL zone, every 15 minutes: spot price × coefficient + margin, grid fees, subscription and VAT.",
+          "fr": "Offre dynamique indexée sur le prix day-ahead de la zone NL, au quart d'heure : prix spot × coefficient + marge, acheminement, abonnement et TVA.",
+          "de": "Dynamischer Tarif auf Basis des Day-Ahead-Preises der Zone NL, viertelstündlich: Spotpreis × Faktor + Marge, Netzentgelte, Grundgebühr und MwSt.",
+          "es": "Tarifa dinámica indexada al precio day-ahead de la zona NL, cada 15 minutos: precio spot × coeficiente + margen, peajes, término fijo e IVA."
+        },
+        "country": "NL",
+        "currency": "EUR",
+        "timezone": "Europe/Amsterdam",
+        "pricing_mode": "rules",
+        "version": "2026-10-16",
+        "calendars": ["spot-nl"],
+        "inputs": [
+          {
+            "key": "multiplier",
+            "type": "number",
+            "label": {
+              "en": "Spot price coefficient",
+              "fr": "Coefficient sur le prix spot",
+              "de": "Faktor auf den Spotpreis",
+              "es": "Coeficiente del precio spot"
+            },
+            "description": {
+              "en": "Multiplies the spot price (1 = the raw market price).",
+              "fr": "Multiplie le prix spot (1 = le prix de marché brut).",
+              "de": "Multipliziert den Spotpreis (1 = reiner Marktpreis).",
+              "es": "Multiplica el precio spot (1 = precio de mercado)."
+            },
+            "default": 1,
+            "required": true
+          },
+          {
+            "key": "margin",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Supplier margin",
+              "fr": "Marge du fournisseur",
+              "de": "Marge des Anbieters",
+              "es": "Margen del comercializador"
+            },
+            "description": {
+              "en": "Added to every kWh, before VAT.",
+              "fr": "Ajoutée à chaque kWh, hors TVA.",
+              "de": "Auf jede kWh aufgeschlagen, ohne MwSt.",
+              "es": "Se suma a cada kWh, sin IVA."
+            },
+            "default": 0.01,
+            "required": true
+          },
+          {
+            "key": "grid_fee",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Grid fees and energy taxes",
+              "fr": "Acheminement et taxes",
+              "de": "Netzentgelte und Abgaben",
+              "es": "Peajes y cargos"
+            },
+            "description": {
+              "en": "Per kWh, before VAT.",
+              "fr": "Par kWh, hors TVA.",
+              "de": "Pro kWh, ohne MwSt.",
+              "es": "Por kWh, sin IVA."
+            },
+            "default": 0.05,
+            "required": true
+          },
+          {
+            "key": "subscription",
+            "type": "number",
+            "unit": "EUR/month",
+            "label": {
+              "en": "Subscription",
+              "fr": "Abonnement",
+              "de": "Grundgebühr",
+              "es": "Término fijo"
+            },
+            "description": {
+              "en": "Fixed monthly fee, before VAT.",
+              "fr": "Part fixe mensuelle, hors TVA.",
+              "de": "Monatliche Grundgebühr, ohne MwSt.",
+              "es": "Cuota fija mensual, sin IVA."
+            },
+            "default": 10,
+            "required": true
+          },
+          {
+            "key": "vat",
+            "type": "number",
+            "unit": "%",
+            "label": {
+              "en": "VAT",
+              "fr": "TVA",
+              "de": "MwSt.",
+              "es": "IVA"
+            },
+            "default": 21,
+            "required": true
+          },
+          {
+            "key": "fallback_price",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Price when no spot price is known",
+              "fr": "Prix si aucun prix spot connu",
+              "de": "Preis ohne bekannten Spotpreis",
+              "es": "Precio sin precio spot conocido"
+            },
+            "description": {
+              "en": "Energy price used for an interval without a published spot price.",
+              "fr": "Prix de l’énergie utilisé pour un intervalle sans prix spot publié.",
+              "de": "Energiepreis für ein Intervall ohne veröffentlichten Spotpreis.",
+              "es": "Precio de la energía para un intervalo sin precio spot publicado."
+            },
+            "default": 0.15,
+            "required": true
+          }
+        ],
+        "tariff": {
+          "tariff_version": 1,
+          "calendars": ["spot-nl"],
+          "components": [
+            {
+              "key": "energy",
+              "kind": "consumption",
+              "label": "EPEX Spot",
+              "rules": [
+                {
+                  "label": "Spot NL",
+                  "price_from_calendar": "spot-nl",
+                  "multiplier": "{{input:multiplier}}",
+                  "offset": "{{input:margin}}"
+                }
+              ],
+              "fallback": {
+                "label": "Fallback",
+                "price": "{{input:fallback_price}}"
+              }
+            },
+            {
+              "key": "grid",
+              "kind": "consumption",
+              "label": "Grid fees",
+              "rules": [
+                {
+                  "label": "Grid fees",
+                  "price": "{{input:grid_fee}}"
+                }
+              ]
+            },
+            {
+              "key": "subscription",
+              "kind": "fixed",
+              "label": "Subscription",
+              "amount": "{{input:subscription}}",
+              "per": "month"
+            },
+            {
+              "key": "vat",
+              "kind": "tax",
+              "label": "VAT",
+              "rate": "{{input:vat}}",
+              "applies_to": ["energy", "grid", "subscription"]
+            }
+          ]
+        }
+      },
+      {
+        "key": "epex-spot-at",
+        "name": {
+          "en": "EPEX Spot dynamic – Austria",
+          "fr": "EPEX Spot dynamique – Autriche",
+          "de": "EPEX Spot dynamisch – Österreich",
+          "es": "EPEX Spot dinámico – Austria"
+        },
+        "description": {
+          "en": "Dynamic tariff indexed on the day-ahead price of the AT zone, every 15 minutes: spot price × coefficient + margin, grid fees, subscription and VAT.",
+          "fr": "Offre dynamique indexée sur le prix day-ahead de la zone AT, au quart d'heure : prix spot × coefficient + marge, acheminement, abonnement et TVA.",
+          "de": "Dynamischer Tarif auf Basis des Day-Ahead-Preises der Zone AT, viertelstündlich: Spotpreis × Faktor + Marge, Netzentgelte, Grundgebühr und MwSt.",
+          "es": "Tarifa dinámica indexada al precio day-ahead de la zona AT, cada 15 minutos: precio spot × coeficiente + margen, peajes, término fijo e IVA."
+        },
+        "country": "AT",
+        "currency": "EUR",
+        "timezone": "Europe/Vienna",
+        "pricing_mode": "rules",
+        "version": "2026-10-16",
+        "calendars": ["spot-at"],
+        "inputs": [
+          {
+            "key": "multiplier",
+            "type": "number",
+            "label": {
+              "en": "Spot price coefficient",
+              "fr": "Coefficient sur le prix spot",
+              "de": "Faktor auf den Spotpreis",
+              "es": "Coeficiente del precio spot"
+            },
+            "description": {
+              "en": "Multiplies the spot price (1 = the raw market price).",
+              "fr": "Multiplie le prix spot (1 = le prix de marché brut).",
+              "de": "Multipliziert den Spotpreis (1 = reiner Marktpreis).",
+              "es": "Multiplica el precio spot (1 = precio de mercado)."
+            },
+            "default": 1,
+            "required": true
+          },
+          {
+            "key": "margin",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Supplier margin",
+              "fr": "Marge du fournisseur",
+              "de": "Marge des Anbieters",
+              "es": "Margen del comercializador"
+            },
+            "description": {
+              "en": "Added to every kWh, before VAT.",
+              "fr": "Ajoutée à chaque kWh, hors TVA.",
+              "de": "Auf jede kWh aufgeschlagen, ohne MwSt.",
+              "es": "Se suma a cada kWh, sin IVA."
+            },
+            "default": 0.01,
+            "required": true
+          },
+          {
+            "key": "grid_fee",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Grid fees and energy taxes",
+              "fr": "Acheminement et taxes",
+              "de": "Netzentgelte und Abgaben",
+              "es": "Peajes y cargos"
+            },
+            "description": {
+              "en": "Per kWh, before VAT.",
+              "fr": "Par kWh, hors TVA.",
+              "de": "Pro kWh, ohne MwSt.",
+              "es": "Por kWh, sin IVA."
+            },
+            "default": 0.05,
+            "required": true
+          },
+          {
+            "key": "subscription",
+            "type": "number",
+            "unit": "EUR/month",
+            "label": {
+              "en": "Subscription",
+              "fr": "Abonnement",
+              "de": "Grundgebühr",
+              "es": "Término fijo"
+            },
+            "description": {
+              "en": "Fixed monthly fee, before VAT.",
+              "fr": "Part fixe mensuelle, hors TVA.",
+              "de": "Monatliche Grundgebühr, ohne MwSt.",
+              "es": "Cuota fija mensual, sin IVA."
+            },
+            "default": 10,
+            "required": true
+          },
+          {
+            "key": "vat",
+            "type": "number",
+            "unit": "%",
+            "label": {
+              "en": "VAT",
+              "fr": "TVA",
+              "de": "MwSt.",
+              "es": "IVA"
+            },
+            "default": 20,
+            "required": true
+          },
+          {
+            "key": "fallback_price",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Price when no spot price is known",
+              "fr": "Prix si aucun prix spot connu",
+              "de": "Preis ohne bekannten Spotpreis",
+              "es": "Precio sin precio spot conocido"
+            },
+            "description": {
+              "en": "Energy price used for an interval without a published spot price.",
+              "fr": "Prix de l’énergie utilisé pour un intervalle sans prix spot publié.",
+              "de": "Energiepreis für ein Intervall ohne veröffentlichten Spotpreis.",
+              "es": "Precio de la energía para un intervalo sin precio spot publicado."
+            },
+            "default": 0.15,
+            "required": true
+          }
+        ],
+        "tariff": {
+          "tariff_version": 1,
+          "calendars": ["spot-at"],
+          "components": [
+            {
+              "key": "energy",
+              "kind": "consumption",
+              "label": "EPEX Spot",
+              "rules": [
+                {
+                  "label": "Spot AT",
+                  "price_from_calendar": "spot-at",
+                  "multiplier": "{{input:multiplier}}",
+                  "offset": "{{input:margin}}"
+                }
+              ],
+              "fallback": {
+                "label": "Fallback",
+                "price": "{{input:fallback_price}}"
+              }
+            },
+            {
+              "key": "grid",
+              "kind": "consumption",
+              "label": "Grid fees",
+              "rules": [
+                {
+                  "label": "Grid fees",
+                  "price": "{{input:grid_fee}}"
+                }
+              ]
+            },
+            {
+              "key": "subscription",
+              "kind": "fixed",
+              "label": "Subscription",
+              "amount": "{{input:subscription}}",
+              "per": "month"
+            },
+            {
+              "key": "vat",
+              "kind": "tax",
+              "label": "VAT",
+              "rate": "{{input:vat}}",
+              "applies_to": ["energy", "grid", "subscription"]
+            }
+          ]
+        }
+      },
+      {
+        "key": "epex-spot-ch",
+        "name": {
+          "en": "EPEX Spot dynamic – Switzerland",
+          "fr": "EPEX Spot dynamique – Suisse",
+          "de": "EPEX Spot dynamisch – Schweiz",
+          "es": "EPEX Spot dinámico – Suiza"
+        },
+        "description": {
+          "en": "Dynamic tariff indexed on the day-ahead price of the CH zone, every 15 minutes: spot price × coefficient + margin, grid fees, subscription and VAT.",
+          "fr": "Offre dynamique indexée sur le prix day-ahead de la zone CH, au quart d'heure : prix spot × coefficient + marge, acheminement, abonnement et TVA.",
+          "de": "Dynamischer Tarif auf Basis des Day-Ahead-Preises der Zone CH, viertelstündlich: Spotpreis × Faktor + Marge, Netzentgelte, Grundgebühr und MwSt.",
+          "es": "Tarifa dinámica indexada al precio day-ahead de la zona CH, cada 15 minutos: precio spot × coeficiente + margen, peajes, término fijo e IVA."
+        },
+        "country": "CH",
+        "currency": "EUR",
+        "timezone": "Europe/Zurich",
+        "pricing_mode": "rules",
+        "version": "2026-10-16",
+        "calendars": ["spot-ch"],
+        "inputs": [
+          {
+            "key": "multiplier",
+            "type": "number",
+            "label": {
+              "en": "Spot price coefficient",
+              "fr": "Coefficient sur le prix spot",
+              "de": "Faktor auf den Spotpreis",
+              "es": "Coeficiente del precio spot"
+            },
+            "description": {
+              "en": "Multiplies the spot price (1 = the raw market price).",
+              "fr": "Multiplie le prix spot (1 = le prix de marché brut).",
+              "de": "Multipliziert den Spotpreis (1 = reiner Marktpreis).",
+              "es": "Multiplica el precio spot (1 = precio de mercado)."
+            },
+            "default": 1,
+            "required": true
+          },
+          {
+            "key": "margin",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Supplier margin",
+              "fr": "Marge du fournisseur",
+              "de": "Marge des Anbieters",
+              "es": "Margen del comercializador"
+            },
+            "description": {
+              "en": "Added to every kWh, before VAT.",
+              "fr": "Ajoutée à chaque kWh, hors TVA.",
+              "de": "Auf jede kWh aufgeschlagen, ohne MwSt.",
+              "es": "Se suma a cada kWh, sin IVA."
+            },
+            "default": 0.01,
+            "required": true
+          },
+          {
+            "key": "grid_fee",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Grid fees and energy taxes",
+              "fr": "Acheminement et taxes",
+              "de": "Netzentgelte und Abgaben",
+              "es": "Peajes y cargos"
+            },
+            "description": {
+              "en": "Per kWh, before VAT.",
+              "fr": "Par kWh, hors TVA.",
+              "de": "Pro kWh, ohne MwSt.",
+              "es": "Por kWh, sin IVA."
+            },
+            "default": 0.05,
+            "required": true
+          },
+          {
+            "key": "subscription",
+            "type": "number",
+            "unit": "EUR/month",
+            "label": {
+              "en": "Subscription",
+              "fr": "Abonnement",
+              "de": "Grundgebühr",
+              "es": "Término fijo"
+            },
+            "description": {
+              "en": "Fixed monthly fee, before VAT.",
+              "fr": "Part fixe mensuelle, hors TVA.",
+              "de": "Monatliche Grundgebühr, ohne MwSt.",
+              "es": "Cuota fija mensual, sin IVA."
+            },
+            "default": 10,
+            "required": true
+          },
+          {
+            "key": "vat",
+            "type": "number",
+            "unit": "%",
+            "label": {
+              "en": "VAT",
+              "fr": "TVA",
+              "de": "MwSt.",
+              "es": "IVA"
+            },
+            "default": 8.1,
+            "required": true
+          },
+          {
+            "key": "fallback_price",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Price when no spot price is known",
+              "fr": "Prix si aucun prix spot connu",
+              "de": "Preis ohne bekannten Spotpreis",
+              "es": "Precio sin precio spot conocido"
+            },
+            "description": {
+              "en": "Energy price used for an interval without a published spot price.",
+              "fr": "Prix de l’énergie utilisé pour un intervalle sans prix spot publié.",
+              "de": "Energiepreis für ein Intervall ohne veröffentlichten Spotpreis.",
+              "es": "Precio de la energía para un intervalo sin precio spot publicado."
+            },
+            "default": 0.15,
+            "required": true
+          }
+        ],
+        "tariff": {
+          "tariff_version": 1,
+          "calendars": ["spot-ch"],
+          "components": [
+            {
+              "key": "energy",
+              "kind": "consumption",
+              "label": "EPEX Spot",
+              "rules": [
+                {
+                  "label": "Spot CH",
+                  "price_from_calendar": "spot-ch",
+                  "multiplier": "{{input:multiplier}}",
+                  "offset": "{{input:margin}}"
+                }
+              ],
+              "fallback": {
+                "label": "Fallback",
+                "price": "{{input:fallback_price}}"
+              }
+            },
+            {
+              "key": "grid",
+              "kind": "consumption",
+              "label": "Grid fees",
+              "rules": [
+                {
+                  "label": "Grid fees",
+                  "price": "{{input:grid_fee}}"
+                }
+              ]
+            },
+            {
+              "key": "subscription",
+              "kind": "fixed",
+              "label": "Subscription",
+              "amount": "{{input:subscription}}",
+              "per": "month"
+            },
+            {
+              "key": "vat",
+              "kind": "tax",
+              "label": "VAT",
+              "rate": "{{input:vat}}",
+              "applies_to": ["energy", "grid", "subscription"]
+            }
+          ]
+        }
+      },
+      {
+        "key": "epex-spot-es",
+        "name": {
+          "en": "EPEX Spot dynamic – Spain",
+          "fr": "EPEX Spot dynamique – Espagne",
+          "de": "EPEX Spot dynamisch – Spanien",
+          "es": "EPEX Spot dinámico – España"
+        },
+        "description": {
+          "en": "Dynamic tariff indexed on the day-ahead price of the ES zone, every 15 minutes: spot price × coefficient + margin, grid fees, subscription and VAT.",
+          "fr": "Offre dynamique indexée sur le prix day-ahead de la zone ES, au quart d'heure : prix spot × coefficient + marge, acheminement, abonnement et TVA.",
+          "de": "Dynamischer Tarif auf Basis des Day-Ahead-Preises der Zone ES, viertelstündlich: Spotpreis × Faktor + Marge, Netzentgelte, Grundgebühr und MwSt.",
+          "es": "Tarifa dinámica indexada al precio day-ahead de la zona ES, cada 15 minutos: precio spot × coeficiente + margen, peajes, término fijo e IVA."
+        },
+        "country": "ES",
+        "currency": "EUR",
+        "timezone": "Europe/Madrid",
+        "pricing_mode": "rules",
+        "version": "2026-10-16",
+        "calendars": ["spot-es"],
+        "inputs": [
+          {
+            "key": "multiplier",
+            "type": "number",
+            "label": {
+              "en": "Spot price coefficient",
+              "fr": "Coefficient sur le prix spot",
+              "de": "Faktor auf den Spotpreis",
+              "es": "Coeficiente del precio spot"
+            },
+            "description": {
+              "en": "Multiplies the spot price (1 = the raw market price).",
+              "fr": "Multiplie le prix spot (1 = le prix de marché brut).",
+              "de": "Multipliziert den Spotpreis (1 = reiner Marktpreis).",
+              "es": "Multiplica el precio spot (1 = precio de mercado)."
+            },
+            "default": 1,
+            "required": true
+          },
+          {
+            "key": "margin",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Supplier margin",
+              "fr": "Marge du fournisseur",
+              "de": "Marge des Anbieters",
+              "es": "Margen del comercializador"
+            },
+            "description": {
+              "en": "Added to every kWh, before VAT.",
+              "fr": "Ajoutée à chaque kWh, hors TVA.",
+              "de": "Auf jede kWh aufgeschlagen, ohne MwSt.",
+              "es": "Se suma a cada kWh, sin IVA."
+            },
+            "default": 0.01,
+            "required": true
+          },
+          {
+            "key": "grid_fee",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Grid fees and energy taxes",
+              "fr": "Acheminement et taxes",
+              "de": "Netzentgelte und Abgaben",
+              "es": "Peajes y cargos"
+            },
+            "description": {
+              "en": "Per kWh, before VAT.",
+              "fr": "Par kWh, hors TVA.",
+              "de": "Pro kWh, ohne MwSt.",
+              "es": "Por kWh, sin IVA."
+            },
+            "default": 0.05,
+            "required": true
+          },
+          {
+            "key": "subscription",
+            "type": "number",
+            "unit": "EUR/month",
+            "label": {
+              "en": "Subscription",
+              "fr": "Abonnement",
+              "de": "Grundgebühr",
+              "es": "Término fijo"
+            },
+            "description": {
+              "en": "Fixed monthly fee, before VAT.",
+              "fr": "Part fixe mensuelle, hors TVA.",
+              "de": "Monatliche Grundgebühr, ohne MwSt.",
+              "es": "Cuota fija mensual, sin IVA."
+            },
+            "default": 10,
+            "required": true
+          },
+          {
+            "key": "vat",
+            "type": "number",
+            "unit": "%",
+            "label": {
+              "en": "VAT",
+              "fr": "TVA",
+              "de": "MwSt.",
+              "es": "IVA"
+            },
+            "default": 21,
+            "required": true
+          },
+          {
+            "key": "fallback_price",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Price when no spot price is known",
+              "fr": "Prix si aucun prix spot connu",
+              "de": "Preis ohne bekannten Spotpreis",
+              "es": "Precio sin precio spot conocido"
+            },
+            "description": {
+              "en": "Energy price used for an interval without a published spot price.",
+              "fr": "Prix de l’énergie utilisé pour un intervalle sans prix spot publié.",
+              "de": "Energiepreis für ein Intervall ohne veröffentlichten Spotpreis.",
+              "es": "Precio de la energía para un intervalo sin precio spot publicado."
+            },
+            "default": 0.15,
+            "required": true
+          }
+        ],
+        "tariff": {
+          "tariff_version": 1,
+          "calendars": ["spot-es"],
+          "components": [
+            {
+              "key": "energy",
+              "kind": "consumption",
+              "label": "EPEX Spot",
+              "rules": [
+                {
+                  "label": "Spot ES",
+                  "price_from_calendar": "spot-es",
+                  "multiplier": "{{input:multiplier}}",
+                  "offset": "{{input:margin}}"
+                }
+              ],
+              "fallback": {
+                "label": "Fallback",
+                "price": "{{input:fallback_price}}"
+              }
+            },
+            {
+              "key": "grid",
+              "kind": "consumption",
+              "label": "Grid fees",
+              "rules": [
+                {
+                  "label": "Grid fees",
+                  "price": "{{input:grid_fee}}"
+                }
+              ]
+            },
+            {
+              "key": "subscription",
+              "kind": "fixed",
+              "label": "Subscription",
+              "amount": "{{input:subscription}}",
+              "per": "month"
+            },
+            {
+              "key": "vat",
+              "kind": "tax",
+              "label": "VAT",
+              "rate": "{{input:vat}}",
+              "applies_to": ["energy", "grid", "subscription"]
+            }
+          ]
+        }
+      },
+      {
+        "key": "epex-spot-pl",
+        "name": {
+          "en": "EPEX Spot dynamic – Poland",
+          "fr": "EPEX Spot dynamique – Pologne",
+          "de": "EPEX Spot dynamisch – Polen",
+          "es": "EPEX Spot dinámico – Polonia"
+        },
+        "description": {
+          "en": "Dynamic tariff indexed on the day-ahead price of the PL zone, every 15 minutes: spot price × coefficient + margin, grid fees, subscription and VAT.",
+          "fr": "Offre dynamique indexée sur le prix day-ahead de la zone PL, au quart d'heure : prix spot × coefficient + marge, acheminement, abonnement et TVA.",
+          "de": "Dynamischer Tarif auf Basis des Day-Ahead-Preises der Zone PL, viertelstündlich: Spotpreis × Faktor + Marge, Netzentgelte, Grundgebühr und MwSt.",
+          "es": "Tarifa dinámica indexada al precio day-ahead de la zona PL, cada 15 minutos: precio spot × coeficiente + margen, peajes, término fijo e IVA."
+        },
+        "country": "PL",
+        "currency": "EUR",
+        "timezone": "Europe/Warsaw",
+        "pricing_mode": "rules",
+        "version": "2026-10-16",
+        "calendars": ["spot-pl"],
+        "inputs": [
+          {
+            "key": "multiplier",
+            "type": "number",
+            "label": {
+              "en": "Spot price coefficient",
+              "fr": "Coefficient sur le prix spot",
+              "de": "Faktor auf den Spotpreis",
+              "es": "Coeficiente del precio spot"
+            },
+            "description": {
+              "en": "Multiplies the spot price (1 = the raw market price).",
+              "fr": "Multiplie le prix spot (1 = le prix de marché brut).",
+              "de": "Multipliziert den Spotpreis (1 = reiner Marktpreis).",
+              "es": "Multiplica el precio spot (1 = precio de mercado)."
+            },
+            "default": 1,
+            "required": true
+          },
+          {
+            "key": "margin",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Supplier margin",
+              "fr": "Marge du fournisseur",
+              "de": "Marge des Anbieters",
+              "es": "Margen del comercializador"
+            },
+            "description": {
+              "en": "Added to every kWh, before VAT.",
+              "fr": "Ajoutée à chaque kWh, hors TVA.",
+              "de": "Auf jede kWh aufgeschlagen, ohne MwSt.",
+              "es": "Se suma a cada kWh, sin IVA."
+            },
+            "default": 0.01,
+            "required": true
+          },
+          {
+            "key": "grid_fee",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Grid fees and energy taxes",
+              "fr": "Acheminement et taxes",
+              "de": "Netzentgelte und Abgaben",
+              "es": "Peajes y cargos"
+            },
+            "description": {
+              "en": "Per kWh, before VAT.",
+              "fr": "Par kWh, hors TVA.",
+              "de": "Pro kWh, ohne MwSt.",
+              "es": "Por kWh, sin IVA."
+            },
+            "default": 0.05,
+            "required": true
+          },
+          {
+            "key": "subscription",
+            "type": "number",
+            "unit": "EUR/month",
+            "label": {
+              "en": "Subscription",
+              "fr": "Abonnement",
+              "de": "Grundgebühr",
+              "es": "Término fijo"
+            },
+            "description": {
+              "en": "Fixed monthly fee, before VAT.",
+              "fr": "Part fixe mensuelle, hors TVA.",
+              "de": "Monatliche Grundgebühr, ohne MwSt.",
+              "es": "Cuota fija mensual, sin IVA."
+            },
+            "default": 10,
+            "required": true
+          },
+          {
+            "key": "vat",
+            "type": "number",
+            "unit": "%",
+            "label": {
+              "en": "VAT",
+              "fr": "TVA",
+              "de": "MwSt.",
+              "es": "IVA"
+            },
+            "default": 23,
+            "required": true
+          },
+          {
+            "key": "fallback_price",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Price when no spot price is known",
+              "fr": "Prix si aucun prix spot connu",
+              "de": "Preis ohne bekannten Spotpreis",
+              "es": "Precio sin precio spot conocido"
+            },
+            "description": {
+              "en": "Energy price used for an interval without a published spot price.",
+              "fr": "Prix de l’énergie utilisé pour un intervalle sans prix spot publié.",
+              "de": "Energiepreis für ein Intervall ohne veröffentlichten Spotpreis.",
+              "es": "Precio de la energía para un intervalo sin precio spot publicado."
+            },
+            "default": 0.15,
+            "required": true
+          }
+        ],
+        "tariff": {
+          "tariff_version": 1,
+          "calendars": ["spot-pl"],
+          "components": [
+            {
+              "key": "energy",
+              "kind": "consumption",
+              "label": "EPEX Spot",
+              "rules": [
+                {
+                  "label": "Spot PL",
+                  "price_from_calendar": "spot-pl",
+                  "multiplier": "{{input:multiplier}}",
+                  "offset": "{{input:margin}}"
+                }
+              ],
+              "fallback": {
+                "label": "Fallback",
+                "price": "{{input:fallback_price}}"
+              }
+            },
+            {
+              "key": "grid",
+              "kind": "consumption",
+              "label": "Grid fees",
+              "rules": [
+                {
+                  "label": "Grid fees",
+                  "price": "{{input:grid_fee}}"
+                }
+              ]
+            },
+            {
+              "key": "subscription",
+              "kind": "fixed",
+              "label": "Subscription",
+              "amount": "{{input:subscription}}",
+              "per": "month"
+            },
+            {
+              "key": "vat",
+              "kind": "tax",
+              "label": "VAT",
+              "rate": "{{input:vat}}",
+              "applies_to": ["energy", "grid", "subscription"]
+            }
+          ]
+        }
+      },
+      {
+        "key": "epex-spot-dk1",
+        "name": {
+          "en": "EPEX Spot dynamic – Denmark West (DK1)",
+          "fr": "EPEX Spot dynamique – Danemark Ouest (DK1)",
+          "de": "EPEX Spot dynamisch – Dänemark West (DK1)",
+          "es": "EPEX Spot dinámico – Dinamarca Oeste (DK1)"
+        },
+        "description": {
+          "en": "Dynamic tariff indexed on the day-ahead price of the DK1 zone, every 15 minutes: spot price × coefficient + margin, grid fees, subscription and VAT.",
+          "fr": "Offre dynamique indexée sur le prix day-ahead de la zone DK1, au quart d'heure : prix spot × coefficient + marge, acheminement, abonnement et TVA.",
+          "de": "Dynamischer Tarif auf Basis des Day-Ahead-Preises der Zone DK1, viertelstündlich: Spotpreis × Faktor + Marge, Netzentgelte, Grundgebühr und MwSt.",
+          "es": "Tarifa dinámica indexada al precio day-ahead de la zona DK1, cada 15 minutos: precio spot × coeficiente + margen, peajes, término fijo e IVA."
+        },
+        "country": "DK",
+        "currency": "EUR",
+        "timezone": "Europe/Copenhagen",
+        "pricing_mode": "rules",
+        "version": "2026-10-16",
+        "calendars": ["spot-dk1"],
+        "inputs": [
+          {
+            "key": "multiplier",
+            "type": "number",
+            "label": {
+              "en": "Spot price coefficient",
+              "fr": "Coefficient sur le prix spot",
+              "de": "Faktor auf den Spotpreis",
+              "es": "Coeficiente del precio spot"
+            },
+            "description": {
+              "en": "Multiplies the spot price (1 = the raw market price).",
+              "fr": "Multiplie le prix spot (1 = le prix de marché brut).",
+              "de": "Multipliziert den Spotpreis (1 = reiner Marktpreis).",
+              "es": "Multiplica el precio spot (1 = precio de mercado)."
+            },
+            "default": 1,
+            "required": true
+          },
+          {
+            "key": "margin",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Supplier margin",
+              "fr": "Marge du fournisseur",
+              "de": "Marge des Anbieters",
+              "es": "Margen del comercializador"
+            },
+            "description": {
+              "en": "Added to every kWh, before VAT.",
+              "fr": "Ajoutée à chaque kWh, hors TVA.",
+              "de": "Auf jede kWh aufgeschlagen, ohne MwSt.",
+              "es": "Se suma a cada kWh, sin IVA."
+            },
+            "default": 0.01,
+            "required": true
+          },
+          {
+            "key": "grid_fee",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Grid fees and energy taxes",
+              "fr": "Acheminement et taxes",
+              "de": "Netzentgelte und Abgaben",
+              "es": "Peajes y cargos"
+            },
+            "description": {
+              "en": "Per kWh, before VAT.",
+              "fr": "Par kWh, hors TVA.",
+              "de": "Pro kWh, ohne MwSt.",
+              "es": "Por kWh, sin IVA."
+            },
+            "default": 0.05,
+            "required": true
+          },
+          {
+            "key": "subscription",
+            "type": "number",
+            "unit": "EUR/month",
+            "label": {
+              "en": "Subscription",
+              "fr": "Abonnement",
+              "de": "Grundgebühr",
+              "es": "Término fijo"
+            },
+            "description": {
+              "en": "Fixed monthly fee, before VAT.",
+              "fr": "Part fixe mensuelle, hors TVA.",
+              "de": "Monatliche Grundgebühr, ohne MwSt.",
+              "es": "Cuota fija mensual, sin IVA."
+            },
+            "default": 10,
+            "required": true
+          },
+          {
+            "key": "vat",
+            "type": "number",
+            "unit": "%",
+            "label": {
+              "en": "VAT",
+              "fr": "TVA",
+              "de": "MwSt.",
+              "es": "IVA"
+            },
+            "default": 25,
+            "required": true
+          },
+          {
+            "key": "fallback_price",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Price when no spot price is known",
+              "fr": "Prix si aucun prix spot connu",
+              "de": "Preis ohne bekannten Spotpreis",
+              "es": "Precio sin precio spot conocido"
+            },
+            "description": {
+              "en": "Energy price used for an interval without a published spot price.",
+              "fr": "Prix de l’énergie utilisé pour un intervalle sans prix spot publié.",
+              "de": "Energiepreis für ein Intervall ohne veröffentlichten Spotpreis.",
+              "es": "Precio de la energía para un intervalo sin precio spot publicado."
+            },
+            "default": 0.15,
+            "required": true
+          }
+        ],
+        "tariff": {
+          "tariff_version": 1,
+          "calendars": ["spot-dk1"],
+          "components": [
+            {
+              "key": "energy",
+              "kind": "consumption",
+              "label": "EPEX Spot",
+              "rules": [
+                {
+                  "label": "Spot DK1",
+                  "price_from_calendar": "spot-dk1",
+                  "multiplier": "{{input:multiplier}}",
+                  "offset": "{{input:margin}}"
+                }
+              ],
+              "fallback": {
+                "label": "Fallback",
+                "price": "{{input:fallback_price}}"
+              }
+            },
+            {
+              "key": "grid",
+              "kind": "consumption",
+              "label": "Grid fees",
+              "rules": [
+                {
+                  "label": "Grid fees",
+                  "price": "{{input:grid_fee}}"
+                }
+              ]
+            },
+            {
+              "key": "subscription",
+              "kind": "fixed",
+              "label": "Subscription",
+              "amount": "{{input:subscription}}",
+              "per": "month"
+            },
+            {
+              "key": "vat",
+              "kind": "tax",
+              "label": "VAT",
+              "rate": "{{input:vat}}",
+              "applies_to": ["energy", "grid", "subscription"]
+            }
+          ]
+        }
+      },
+      {
+        "key": "epex-spot-fi",
+        "name": {
+          "en": "EPEX Spot dynamic – Finland",
+          "fr": "EPEX Spot dynamique – Finlande",
+          "de": "EPEX Spot dynamisch – Finnland",
+          "es": "EPEX Spot dinámico – Finlandia"
+        },
+        "description": {
+          "en": "Dynamic tariff indexed on the day-ahead price of the FI zone, every 15 minutes: spot price × coefficient + margin, grid fees, subscription and VAT.",
+          "fr": "Offre dynamique indexée sur le prix day-ahead de la zone FI, au quart d'heure : prix spot × coefficient + marge, acheminement, abonnement et TVA.",
+          "de": "Dynamischer Tarif auf Basis des Day-Ahead-Preises der Zone FI, viertelstündlich: Spotpreis × Faktor + Marge, Netzentgelte, Grundgebühr und MwSt.",
+          "es": "Tarifa dinámica indexada al precio day-ahead de la zona FI, cada 15 minutos: precio spot × coeficiente + margen, peajes, término fijo e IVA."
+        },
+        "country": "FI",
+        "currency": "EUR",
+        "timezone": "Europe/Helsinki",
+        "pricing_mode": "rules",
+        "version": "2026-10-16",
+        "calendars": ["spot-fi"],
+        "inputs": [
+          {
+            "key": "multiplier",
+            "type": "number",
+            "label": {
+              "en": "Spot price coefficient",
+              "fr": "Coefficient sur le prix spot",
+              "de": "Faktor auf den Spotpreis",
+              "es": "Coeficiente del precio spot"
+            },
+            "description": {
+              "en": "Multiplies the spot price (1 = the raw market price).",
+              "fr": "Multiplie le prix spot (1 = le prix de marché brut).",
+              "de": "Multipliziert den Spotpreis (1 = reiner Marktpreis).",
+              "es": "Multiplica el precio spot (1 = precio de mercado)."
+            },
+            "default": 1,
+            "required": true
+          },
+          {
+            "key": "margin",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Supplier margin",
+              "fr": "Marge du fournisseur",
+              "de": "Marge des Anbieters",
+              "es": "Margen del comercializador"
+            },
+            "description": {
+              "en": "Added to every kWh, before VAT.",
+              "fr": "Ajoutée à chaque kWh, hors TVA.",
+              "de": "Auf jede kWh aufgeschlagen, ohne MwSt.",
+              "es": "Se suma a cada kWh, sin IVA."
+            },
+            "default": 0.01,
+            "required": true
+          },
+          {
+            "key": "grid_fee",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Grid fees and energy taxes",
+              "fr": "Acheminement et taxes",
+              "de": "Netzentgelte und Abgaben",
+              "es": "Peajes y cargos"
+            },
+            "description": {
+              "en": "Per kWh, before VAT.",
+              "fr": "Par kWh, hors TVA.",
+              "de": "Pro kWh, ohne MwSt.",
+              "es": "Por kWh, sin IVA."
+            },
+            "default": 0.05,
+            "required": true
+          },
+          {
+            "key": "subscription",
+            "type": "number",
+            "unit": "EUR/month",
+            "label": {
+              "en": "Subscription",
+              "fr": "Abonnement",
+              "de": "Grundgebühr",
+              "es": "Término fijo"
+            },
+            "description": {
+              "en": "Fixed monthly fee, before VAT.",
+              "fr": "Part fixe mensuelle, hors TVA.",
+              "de": "Monatliche Grundgebühr, ohne MwSt.",
+              "es": "Cuota fija mensual, sin IVA."
+            },
+            "default": 10,
+            "required": true
+          },
+          {
+            "key": "vat",
+            "type": "number",
+            "unit": "%",
+            "label": {
+              "en": "VAT",
+              "fr": "TVA",
+              "de": "MwSt.",
+              "es": "IVA"
+            },
+            "default": 25.5,
+            "required": true
+          },
+          {
+            "key": "fallback_price",
+            "type": "number",
+            "unit": "EUR/kWh",
+            "label": {
+              "en": "Price when no spot price is known",
+              "fr": "Prix si aucun prix spot connu",
+              "de": "Preis ohne bekannten Spotpreis",
+              "es": "Precio sin precio spot conocido"
+            },
+            "description": {
+              "en": "Energy price used for an interval without a published spot price.",
+              "fr": "Prix de l’énergie utilisé pour un intervalle sans prix spot publié.",
+              "de": "Energiepreis für ein Intervall ohne veröffentlichten Spotpreis.",
+              "es": "Precio de la energía para un intervalo sin precio spot publicado."
+            },
+            "default": 0.15,
+            "required": true
+          }
+        ],
+        "tariff": {
+          "tariff_version": 1,
+          "calendars": ["spot-fi"],
+          "components": [
+            {
+              "key": "energy",
+              "kind": "consumption",
+              "label": "EPEX Spot",
+              "rules": [
+                {
+                  "label": "Spot FI",
+                  "price_from_calendar": "spot-fi",
+                  "multiplier": "{{input:multiplier}}",
+                  "offset": "{{input:margin}}"
+                }
+              ],
+              "fallback": {
+                "label": "Fallback",
+                "price": "{{input:fallback_price}}"
+              }
+            },
+            {
+              "key": "grid",
+              "kind": "consumption",
+              "label": "Grid fees",
+              "rules": [
+                {
+                  "label": "Grid fees",
+                  "price": "{{input:grid_fee}}"
+                }
+              ]
+            },
+            {
+              "key": "subscription",
+              "kind": "fixed",
+              "label": "Subscription",
+              "amount": "{{input:subscription}}",
+              "per": "month"
+            },
+            {
+              "key": "vat",
+              "kind": "tax",
+              "label": "VAT",
+              "rate": "{{input:vat}}",
+              "applies_to": ["energy", "grid", "subscription"]
+            }
+          ]
+        }
+      }
+    ],
+    "calendars": [
+      {
+        "key": "spot-fr",
+        "granularity": "fifteen_minutes",
+        "timezone": "Europe/Paris",
+        "currency": "EUR"
+      },
+      {
+        "key": "spot-de",
+        "granularity": "fifteen_minutes",
+        "timezone": "Europe/Berlin",
+        "currency": "EUR"
+      },
+      {
+        "key": "spot-be",
+        "granularity": "fifteen_minutes",
+        "timezone": "Europe/Brussels",
+        "currency": "EUR"
+      },
+      {
+        "key": "spot-nl",
+        "granularity": "fifteen_minutes",
+        "timezone": "Europe/Amsterdam",
+        "currency": "EUR"
+      },
+      {
+        "key": "spot-at",
+        "granularity": "fifteen_minutes",
+        "timezone": "Europe/Vienna",
+        "currency": "EUR"
+      },
+      {
+        "key": "spot-ch",
+        "granularity": "fifteen_minutes",
+        "timezone": "Europe/Zurich",
+        "currency": "EUR"
+      },
+      {
+        "key": "spot-es",
+        "granularity": "fifteen_minutes",
+        "timezone": "Europe/Madrid",
+        "currency": "EUR"
+      },
+      {
+        "key": "spot-pl",
+        "granularity": "fifteen_minutes",
+        "timezone": "Europe/Warsaw",
+        "currency": "EUR"
+      },
+      {
+        "key": "spot-dk1",
+        "granularity": "fifteen_minutes",
+        "timezone": "Europe/Copenhagen",
+        "currency": "EUR"
+      },
+      {
+        "key": "spot-fi",
+        "granularity": "fifteen_minutes",
+        "timezone": "Europe/Helsinki",
+        "currency": "EUR"
+      }
+    ]
+  }
+}
