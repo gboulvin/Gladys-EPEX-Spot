@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-16
+
 ### Added
 
 - Day-ahead electricity prices of 10 bidding zones (France, Germany /
@@ -35,4 +37,5 @@ the notes of the version's GitHub Release.
 - Known prices kept in `/data`: a restart neither re-downloads nor re-announces
   tomorrow's prices.
 
-[Unreleased]: https://github.com/gboulvin/Gladys-EPEX-Spot/commits/main
+[Unreleased]: https://github.com/gboulvin/Gladys-EPEX-Spot/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/gboulvin/Gladys-EPEX-Spot/releases/tag/v1.0.0
