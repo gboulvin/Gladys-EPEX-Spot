@@ -8,8 +8,8 @@
     "de": "Day-Ahead-Strompreise (EPEX Spot) und dynamische Tarife in Gladys.",
     "es": "Precios eléctricos day-ahead (EPEX Spot) y tarifas dinámicas en Gladys."
   },
-  "version": "1.0.0",
-  "docker_image": "ghcr.io/gboulvin/gladys-epex-spot:1.0.0",
+  "version": "1.0.1",
+  "docker_image": "ghcr.io/gboulvin/gladys-epex-spot:1.0.1",
   "gladys_version": ">=5.2.0",
   "cover_image": "https://raw.githubusercontent.com/gboulvin/Gladys-EPEX-Spot/main/cover.png",
   "categories": ["energy", "services"],

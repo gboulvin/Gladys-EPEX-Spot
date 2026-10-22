@@ -1,6 +1,6 @@
 {
   "name": "gladys-epex-spot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Gladys Assistant integration: day-ahead electricity prices (EPEX Spot), dynamic tariffs, widgets and scenes.",
   "type": "module",
