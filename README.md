@@ -10,7 +10,7 @@ Built from the official
 [JavaScript integration template](https://github.com/GladysAssistant/integration-template-js)
 with [`@gladysassistant/integration-sdk`](https://github.com/GladysAssistant/integration-sdk-js).
 
-- **Requires Gladys ≥ 5.2.0** (energy contracts, widgets, scene capabilities).
+- **Requires Gladys ≥ 5.3.0** (catalog keywords and countries, energy contracts, widgets, scene capabilities).
 - **Cloud** integration: prices come from the free public API of
   [energy-charts.info](https://www.energy-charts.info) — no account, no key.
 - **Languages**: English, French, German, Spanish.
